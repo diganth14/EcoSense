@@ -14,6 +14,13 @@ export default function Dashboard({ showToast }) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('heatmap')
 
+  // Check if the account was just created
+  const isNewUser = user?.metadata?.creationTime === user?.metadata?.lastSignInTime;
+  
+  // Placeholder for Firestore data (defaults to Level 1, 0 XP)
+  const userLevel = user?.level || 1;
+  const userXP = user?.xp || 0;
+
   // Sidebar links
   const navItems = [
     { id: 'heatmap', label: 'Community Heatmap', icon: Map, badge: '' },
@@ -70,7 +77,7 @@ export default function Dashboard({ showToast }) {
           <img src={user?.photoURL || 'https://via.placeholder.com/150'} alt="User" className="w-10 h-10 rounded-full border border-border-bright" />
           <div className="flex-1 overflow-hidden">
             <div className="text-sm font-semibold text-white truncate">{user?.displayName || 'EcoWarrior'}</div>
-            <div className="text-xs text-eco-400">🏅 Level 7 · 2.3k XP</div>
+            <div className="text-xs text-eco-400">🏅 Level {userLevel} · {userXP} XP</div>
           </div>
           <button onClick={logout} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors" title="Logout">
             <LogOut className="w-4 h-4" />
@@ -111,7 +118,7 @@ export default function Dashboard({ showToast }) {
           {/* Hero Section */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="font-display text-3xl font-bold mb-2">Welcome Back, <span className="text-gradient-bright">{user?.displayName?.split(' ')[0] || 'EcoWarrior'}</span></h2>
+              <h2 className="font-display text-3xl font-bold mb-2">{isNewUser ? 'Welcome' : 'Welcome back'}, <span className="text-gradient-bright">{user?.displayName?.split(' ')[0] || 'EcoWarrior'}</span></h2>
               <p className="text-eco-200/60 flex items-center gap-2 text-sm font-medium">
                 <span className="w-2.5 h-2.5 rounded-full bg-eco-500 animate-pulse"></span>
                 Live data · Bengaluru, KA
@@ -219,7 +226,7 @@ export default function Dashboard({ showToast }) {
                   <img src={user?.photoURL || 'https://via.placeholder.com/150'} alt="User" className="w-10 h-10 rounded-full border border-border-bright" />
                   <div className="flex-1 overflow-hidden">
                     <div className="text-sm font-semibold text-white truncate">{user?.displayName || 'EcoWarrior'}</div>
-                    <div className="text-xs text-eco-400">🏅 Level 7</div>
+                    <div className="text-xs text-eco-400">🏅 Level {userLevel}</div>
                   </div>
                   <button onClick={() => { logout(); setMobileOpen(false); }} className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg">
                     <LogOut className="w-4 h-4" />
