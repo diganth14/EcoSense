@@ -6,8 +6,7 @@
 
 const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY
-const MODEL = 'llama-3.2-11b-vision-preview'
-
+const MODEL = 'qwen/qwen3.8-27b'
 /**
  * Sleep helper for backoff delays
  */
